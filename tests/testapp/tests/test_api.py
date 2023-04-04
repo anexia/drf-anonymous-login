@@ -1,0 +1,92 @@
+from datetime import timedelta
+
+from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
+from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
+from testapp.models import PrivateModel, PublicModel
+
+from drf_anonymous_login.authentication import AUTH_HEADER, AUTH_KEYWORD
+from drf_anonymous_login.management.commands.cleanup_tokens import Command
+from drf_anonymous_login.models import AnonymousLogin
+
+
+class TestApi(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.anonymous_login = AnonymousLogin.objects.create(request_data={})
+        PublicModel.objects.create(name="public model")
+        PrivateModel.objects.create(name="private model")
+
+    def login_header(self):
+        return {AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, self.anonymous_login.token)}
+
+    def test_no_login(self):
+        """
+        Assert that token is required only for protected viewsets (with AnonymousLoginAuthenticationModelViewSet),
+        not for public ones
+        :return:
+        """
+        # make sure public model can be accessed by anyone
+        url = reverse("publicmodel-list")
+        response = self.client.get(url)
+        self.assertEqual(HTTP_200_OK, response.status_code, response.content)
+
+        # make sure private model can not be accessed by anyone
+        url = reverse("privatemodel-list")
+        response = self.client.get(url)
+        self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, response.content)
+
+    def test_anonymous_login_token(self):
+        """
+        Assert that token allows access
+        :return:
+        """
+        url = reverse("privatemodel-list")
+        response = self.client.get(url, **self.login_header())
+        self.assertEqual(HTTP_200_OK, response.status_code, response.content)
+
+    def test_anonymous_login_token_invalid(self):
+        """
+        Assert that an invalid token does not allow access
+        :return:
+        """
+        url = reverse("privatemodel-list")
+        response = self.client.get(
+            url, **{AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, "invalid_token")}
+        )
+        self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, response.content)
+        self.assertEqual(str(response.data["detail"]), "Invalid authentication token")
+
+    def test_anonymous_login_token_expired(self):
+        """
+        Assert that an expired token does not allow access any more
+        :return:
+        """
+        self.anonymous_login.expiration_datetime = timezone.now() - timedelta(days=2)
+        self.anonymous_login.save()
+        url = reverse("privatemodel-list")
+        response = self.client.get(url, **self.login_header())
+        self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, response.content)
+        self.assertEqual(str(response.data["detail"]), "Expired authentication token")
+
+    def test_anonymous_login_token_cleanup(self):
+        """
+        Assert that only an expired token gets deleted from the clean command
+        :return:
+        """
+        self.assertEqual(AnonymousLogin.objects.count(), 1)
+
+        cleanup_tokens = Command()
+
+        # make sure cleanup does nothing
+        cleanup_tokens.handle_tick()
+        self.assertEqual(AnonymousLogin.objects.count(), 1)
+
+        # expire the token
+        self.anonymous_login.expiration_datetime = timezone.now() - timedelta(days=2)
+        self.anonymous_login.save()
+
+        # make sure the token gets deleted
+        cleanup_tokens.handle_tick()
+        self.assertEqual(AnonymousLogin.objects.count(), 0)

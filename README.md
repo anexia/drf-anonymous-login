@@ -1,32 +1,67 @@
-## PROJECT NAME
+## DRF Anonymous Login
 
-A short description of what this project does.
+[![Codecov](https://img.shields.io/codecov/c/gh/anexia/drf-anonymous-login)](https://codecov.io/gh/anexia/drf-anonymous-login)
 
-## Goals
-
-It is a good idea to provide a mission statement for your project, enshrining
-what the project wants to accomplish so that as more people join your project
-everyone can work in alignment.
+Django rest framework module to allow login via token (without User instance). Any request with valid token in the
+AUTH_HEADER (name configurable via `setting.py`, "HTTP_X_AUTHORIZATION_ANONYMOUS" by default) will be accepted.
 
 ### Installation
 
-Instructions for how to download/install the code onto your machine.
+1. Install using pip:
 
-Example:
+```shell
+pip install git+https://github.com/anexia/drf-anonymous-login
 ```
-./install myProject --save
+
+2. Integrate `drf_anonymous_login` into your `settings.py`
+
+```python
+INSTALLED_APPS = [
+    # ...
+    'drf_anonymous_login',
+    # ...
+]
 ```
 
 ### Usage
 
-Usage instructions for your code.
+There are multiple ways to include the `AnonymousLogin` functionality to your endpoints. We recommend to use one of
+the following approaches:
 
-Example:
+1. Inherit from the `AnonymousLoginAuthenticationModelViewSet` for any model that is supposed to be accessible via 
+valid token header. You'll find a simple exemplary usage scenario provided the [testapp](tests/testapp/views.py).
 
-```
-var myMod = require('mymodule');
+OR
 
-myMod.foo('hi');
+2. Directly add the `AnonymousLoginAuthentication` and `IsAuthenticated` to your ViewSet's `authentication_classes` and
+   `permission_classes` as implemented in the [AnonymousLoginAuthenticationModelViewSet](drf_anonymous_login/views.py).
+
+## Unit Tests
+
+See folder [tests/](tests/). The provided tests cover these criteria:
+* success:
+  * access public endpoint without token
+  * access private endpoint with valid token
+  * cleanup task does not remove tokens before their expiration_datetime
+  * cleanup task removes tokens after their expiration_datetime
+* failure:
+  * access private endpoint without token
+  * access private endpoint with invalid token
+  * access private endpoint with expired token
+
+Follow below instructions to run the tests.
+You may exchange the installed Django and DRF versions according to your requirements. 
+:warning: Depending on your local environment settings you might need to explicitly call `python3` instead of `python`.
+```bash
+# install dependencies
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# setup environment
+pip install -e .
+
+# run tests
+cd tests && python manage.py test
 ```
 
 ### Contributing
