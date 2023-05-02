@@ -1,5 +1,7 @@
 ## DRF Anonymous Login
 
+[![PyPI version](https://img.shields.io/pypi/v/drf-anonymous-login.svg)](https://pypi.org/project/drf-anonymous-login/)
+[![Run linter and tests](https://github.com/anexia/drf-anonymous-login/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/anexia/drf-anonymous-login/actions/workflows/test.yml)
 [![Codecov](https://img.shields.io/codecov/c/gh/anexia/drf-anonymous-login)](https://codecov.io/gh/anexia/drf-anonymous-login)
 
 Django rest framework module to allow login via token (without User instance). Any request with valid token in the
@@ -10,7 +12,7 @@ AUTH_HEADER (name configurable via `setting.py`, "HTTP_X_AUTHORIZATION_ANONYMOUS
 1. Install using pip:
 
 ```shell
-pip install git+https://github.com/anexia/drf-anonymous-login
+pip install drf-anonymous-login
 ```
 
 2. Integrate `drf_anonymous_login` into your `settings.py`

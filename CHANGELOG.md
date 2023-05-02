@@ -6,5 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0]
+
 ### Added
 - Initial setup
+
+[Unreleased]: https://github.com/anexia/drf-anonymous-login/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/anexia/drf-anonymous-login/releases/tag/1.0.0
