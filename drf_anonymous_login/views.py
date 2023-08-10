@@ -16,7 +16,10 @@ from drf_anonymous_login.models import AnonymousLogin
 
 
 class AnonymousLoginSerializer(serializers.Serializer):
-    pass
+    token = serializers.CharField(read_only=True)
+
+    class Meta:
+        fields = ("token",)
 
 
 class CreateAnonymousLoginViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
