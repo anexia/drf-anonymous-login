@@ -36,6 +36,18 @@ OR
 2. Directly add the `AnonymousLoginAuthentication` and `IsAuthenticated` to your ViewSet's `authentication_classes` and
    `permission_classes` as implemented in the [AnonymousLoginAuthenticationModelViewSet](drf_anonymous_login/views.py).
 
+#### Configure token expiration
+The tokens will not expire by default (expiration_datetime remains `None`). You can  configure the 
+`ANONYMOUS_LOGIN_EXPIRATION` in your application's `settings.py` to define a default expiration in minutes, e.g.
+to have any token only valid for 15 minutes, use:
+```python
+# settings.py
+
+...
+ANONYMOUS_LOGIN_EXPIRATION=15
+
+```
+
 ## Unit Tests
 
 See folder [tests/](tests/). The provided tests cover these criteria:

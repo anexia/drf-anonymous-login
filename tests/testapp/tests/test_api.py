@@ -21,6 +21,19 @@ class TestApi(TestCase):
     def login_header(self):
         return {AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, self.anonymous_login.token)}
 
+    def test_no_default_expiration_datetime(self):
+        self.assertIsNone(self.anonymous_login.expiration_datetime)
+
+    def test_default_expiration_datetime(self):
+        with self.settings(ANONYMOUS_LOGIN_EXPIRATION=15):
+            today = timezone.now()
+            self.anonymous_login = AnonymousLogin.objects.create(request_data={})
+            self.assertIsNotNone(self.anonymous_login.expiration_datetime)
+            self.assertGreater(self.anonymous_login.expiration_datetime, today)
+            self.assertLess(
+                self.anonymous_login.expiration_datetime, today + timedelta(minutes=16)
+            )
+
     def test_no_login(self):
         """
         Assert that token is required only for protected viewsets (with AnonymousLoginAuthenticationModelViewSet),
