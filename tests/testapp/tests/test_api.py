@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
-from testapp.models import PrivateModel, PublicModel
+from testapp.models import PrivateModel, PublicModel, User
 
 from drf_anonymous_login.authentication import AUTH_HEADER, AUTH_KEYWORD
 from drf_anonymous_login.management.commands.cleanup_tokens import Command
@@ -103,3 +103,39 @@ class TestApi(TestCase):
         # make sure the token gets deleted
         cleanup_tokens.handle_tick()
         self.assertEqual(AnonymousLogin.objects.count(), 0)
+
+    def test_user_is_anonymous_login(self):
+        """
+        Assert that User is correctly identified as AnonymousLogin
+        :return:
+        """
+        user = User.objects.create(
+            username=self.anonymous_login.token, password="password"
+        )
+        self.assertTrue(user.is_anonymous_login)
+
+    def test_user_is_not_anonymous_login(self):
+        """
+        Assert that User is correctly identified as no AnonymousLogin
+        :return:
+        """
+        user = User.objects.create(username="user", password="password")
+        self.assertFalse(user.is_anonymous_login)
+
+    def test_user_get_anonymous_login(self):
+        """
+        Assert that User can access their AnonymousLogin
+        :return:
+        """
+        user = User.objects.create(
+            username=self.anonymous_login.token, password="password"
+        )
+        self.assertEqual(user.anonymous_login, self.anonymous_login)
+
+    def test_user_get_no_anonymous_login(self):
+        """
+        Assert that User can not access an AnonymousLogin
+        :return:
+        """
+        user = User.objects.create(username="user", password="password")
+        self.assertIsNone(user.anonymous_login)

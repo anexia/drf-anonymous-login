@@ -33,3 +33,20 @@ class AnonymousLogin(models.Model):
         default_expiration = getattr(settings, "ANONYMOUS_LOGIN_EXPIRATION", None)
         if default_expiration:
             return timezone.now() + timedelta(minutes=default_expiration)
+
+
+class AnonymousLoginUserMixin(object):
+    @property
+    def is_anonymous_login(self):
+        return AnonymousLogin.objects.filter(token=self.username).exists()
+
+    @property
+    def anonymous_login(self):
+        """
+        Returns the "longest" (with the latest expiration) AnonymousLogin element matching the user's username
+        """
+        return (
+            AnonymousLogin.objects.filter(token=self.username)
+            .order_by("-expiration_datetime")
+            .first()
+        )
