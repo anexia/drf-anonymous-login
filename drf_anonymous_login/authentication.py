@@ -7,13 +7,17 @@ from .models import AnonymousLogin
 
 AUTH_KEYWORD = "Token"
 AUTH_HEADER = "HTTP_X_AUTHORIZATION_ANONYMOUS"
+AUTH_COOKIE = "anonymous_token"
 
 
 class AnonymousLoginAuthentication(authentication.BaseAuthentication):
     keyword = AUTH_KEYWORD
 
     def authenticate(self, request):
-        auth = request.META.get(AUTH_HEADER, "").split()
+        auth = (
+            request.META.get(AUTH_HEADER, "").split()
+            or request.COOKIES.get(AUTH_COOKIE, "").split()
+        )
 
         if not auth or auth[0].lower() != self.keyword.lower():
             return None

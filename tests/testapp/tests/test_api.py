@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from testapp.models import PrivateModel, PublicModel, User
 
 from drf_anonymous_login.authentication import AUTH_HEADER, AUTH_KEYWORD
@@ -139,3 +139,22 @@ class TestApi(TestCase):
         """
         user = User.objects.create(username="user", password="password")
         self.assertIsNone(user.anonymous_login)
+
+    def test_anonymous_login_with_cookie_authentication(self):
+        """
+        Assert that cookie authentication works
+        :return:
+        """
+        # create anonymous login and check if cookie is set
+        url = reverse("auth_anonymous-list")
+        response = self.client.post(url)
+        self.assertEqual(HTTP_201_CREATED, response.status_code)
+        self.assertEqual(
+            response.cookies["anonymous_token"].value, f"Token {response.data['token']}"
+        )
+
+        # set cookies and make sure it works
+        url = reverse("privatemodel-list")
+        self.client.cookies.load({"anonymous_token": f"Token {response.data['token']}"})
+        response = self.client.get(url)
+        self.assertEqual(HTTP_200_OK, response.status_code)
