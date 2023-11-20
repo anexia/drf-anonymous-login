@@ -1,4 +1,7 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from drf_anonymous_login.models import AnonymousLoginUserMixin
 
 
 class PublicModel(models.Model):
@@ -15,3 +18,7 @@ class PrivateModel(models.Model):
     """
 
     name = models.CharField(max_length=50, primary_key=True)
+
+
+class User(AnonymousLoginUserMixin, AbstractUser):
+    pass
