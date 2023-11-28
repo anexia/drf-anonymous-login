@@ -8,13 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Mixin for User to provide properties `is_anonymous_login` and `anonymous_login`
+- Cookie authentication support
 
 ## [1.1.0]
 
 ### Added
 - settings.ANONYMOUS_LOGIN_EXPIRATION to allow expiration of AnonymousLogin
-
-## [1.0.0]
 
 ## [1.0.0]
 
