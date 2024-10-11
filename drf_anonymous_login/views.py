@@ -30,18 +30,18 @@ class CreateAnonymousLoginViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
     @staticmethod
     def extract_request_headers(request):
         regex = re.compile("^HTTP_")
-        return dict(
-            (regex.sub("", header), value)
+        return {
+            regex.sub("", header): value
             for (header, value) in request.META.items()
             if header.startswith("HTTP_")
-        )
+        }
 
     def create(self, request, *args, **kwargs):
         user = AnonymousLogin.objects.create(
             request_data={
                 "data": request.data,
                 "headers": self.extract_request_headers(request),
-            }
+            },
         )
         return Response({"token": user.token}, status=status.HTTP_201_CREATED)
 

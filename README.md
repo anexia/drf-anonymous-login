@@ -30,7 +30,7 @@ INSTALLED_APPS = [
 There are multiple ways to include the `AnonymousLogin` functionality to your endpoints. We recommend to use one of
 the following approaches:
 
-1. Inherit from the `AnonymousLoginAuthenticationModelViewSet` for any model that is supposed to be accessible via 
+1. Inherit from the `AnonymousLoginAuthenticationModelViewSet` for any model that is supposed to be accessible via
 valid token header. You'll find a simple exemplary usage scenario provided the [testapp](tests/testapp/views.py).
 
 OR
@@ -38,24 +38,24 @@ OR
 2. Directly add the `AnonymousLoginAuthentication` and `IsAuthenticated` to your ViewSet's `authentication_classes` and
    `permission_classes` as implemented in the [AnonymousLoginAuthenticationModelViewSet](drf_anonymous_login/views.py).
 
-3. Optionally add the `AnonymousLoginUserMixin` to your app's User model in order to access its `is_anonymous_login` 
+3. Optionally add the `AnonymousLoginUserMixin` to your app's User model in order to access its `is_anonymous_login`
    and `anonymous_login` properties:
    ```
    # myapp.models.py
-   
+
    class User(AnonymousLoginUserMixin, AbstractUser):
        pass
    ```
-   
+
    ```
    # settings.py
-   
+
    AUTH_USER_MODEL = "myapp.User"
    ```
-   
+
 
 #### Configure token expiration
-The tokens will not expire by default (expiration_datetime remains `None`). You can  configure the 
+The tokens will not expire by default (expiration_datetime remains `None`). You can  configure the
 `ANONYMOUS_LOGIN_EXPIRATION` in your application's `settings.py` to define a default expiration in minutes, e.g.
 to have any token only valid for 15 minutes, use:
 ```python
@@ -80,7 +80,7 @@ See folder [tests/](tests/). The provided tests cover these criteria:
   * access private endpoint with expired token
 
 Follow below instructions to run the tests.
-You may exchange the installed Django and DRF versions according to your requirements. 
+You may exchange the installed Django and DRF versions according to your requirements.
 :warning: Depending on your local environment settings you might need to explicitly call `python3` instead of `python`.
 ```bash
 # install dependencies

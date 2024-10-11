@@ -12,7 +12,8 @@ class TestSetup(SimpleTestCase):
 
     def test_models(self):
         self.assertIs(
-            apps.get_model("drf_anonymous_login", "AnonymousLogin"), AnonymousLogin
+            apps.get_model("drf_anonymous_login", "AnonymousLogin"),
+            AnonymousLogin,
         )
         self.assertIs(apps.get_model("testapp", "PublicModel"), PublicModel)
         self.assertIs(apps.get_model("testapp", "PrivateModel"), PrivateModel)
