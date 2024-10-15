@@ -12,7 +12,9 @@ router.register(r"private_models", PrivateModelViewSet)
 
 # anonymous login route
 router.register(
-    r"auth_anonymous", CreateAnonymousLoginViewSet, basename="auth_anonymous"
+    r"auth_anonymous",
+    CreateAnonymousLoginViewSet,
+    basename="auth_anonymous",
 )
 
 urlpatterns = [path("admin/", admin.site.urls), path("api/", include(router.urls))]

@@ -1,15 +1,15 @@
 # Package and package dependencies
 -e .
-
-# Development dependencies
-setuptools>=67.6.1,<67.7
-wheel>=0.40.0,<0.41
-twine>=4.0.2,<4.1
-coverage>=7.2.3,<7.3
-
-# Linters and formatters
-pre-commit>=3.2.2,<3.3
+coverage>=7.6.2,<7.7
 
 # TestApp dependencies
-django>=3.2,<4.3
-djangorestframework>=3.14.0,<4
+django>=4.2,<5.2
+djangorestframework>=3.15.0,<3.16
+
+# Linters and formatters
+pre-commit>=4.0.1,<4.1
+
+# Development dependencies
+setuptools>=75.1.0,<76.0
+twine>=5.1.1,<5.2
+wheel>=0.44.0,<0.45

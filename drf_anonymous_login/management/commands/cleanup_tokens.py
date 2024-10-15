@@ -29,7 +29,8 @@ class Command(BaseCommand):
 
             except Exception as exc:
                 self.stdout.write(
-                    "%s exception occurred ... " % (exc.__class__.__name__,), ending=""
+                    f"{exc.__class__.__name__} exception occurred ... ",
+                    ending="",
                 )
                 self.stdout.flush()
                 self.stdout.write(self.style.ERROR("FATAL"))
@@ -60,7 +61,7 @@ class Command(BaseCommand):
         )
 
     def __init__(self, *args, **kwargs):
-        super(Command, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # The command will run as long as the `_running` attribute is
         # set to `True`. To safely quit the command, just set this attribute to `False` and the

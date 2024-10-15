@@ -13,7 +13,9 @@ class Migration(migrations.Migration):
             model_name="anonymouslogin",
             name="expiration_datetime",
             field=models.DateTimeField(
-                default=None, null=True, verbose_name="expiration datetime"
+                default=None,
+                null=True,
+                verbose_name="expiration datetime",
             ),
         ),
         migrations.AlterField(
@@ -25,7 +27,10 @@ class Migration(migrations.Migration):
             model_name="anonymouslogin",
             name="token",
             field=models.CharField(
-                db_index=True, max_length=64, unique=True, verbose_name="token"
+                db_index=True,
+                max_length=64,
+                unique=True,
+                verbose_name="token",
             ),
         ),
     ]

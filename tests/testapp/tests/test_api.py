@@ -19,7 +19,7 @@ class TestApi(TestCase):
         PrivateModel.objects.create(name="private model")
 
     def login_header(self):
-        return {AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, self.anonymous_login.token)}
+        return {AUTH_HEADER: f"{AUTH_KEYWORD} {self.anonymous_login.token}"}
 
     def test_no_default_expiration_datetime(self):
         self.assertIsNone(self.anonymous_login.expiration_datetime)
@@ -31,7 +31,8 @@ class TestApi(TestCase):
             self.assertIsNotNone(self.anonymous_login.expiration_datetime)
             self.assertGreater(self.anonymous_login.expiration_datetime, today)
             self.assertLess(
-                self.anonymous_login.expiration_datetime, today + timedelta(minutes=16)
+                self.anonymous_login.expiration_datetime,
+                today + timedelta(minutes=16),
             )
 
     def test_no_login(self):
@@ -66,7 +67,8 @@ class TestApi(TestCase):
         """
         url = reverse("privatemodel-list")
         response = self.client.get(
-            url, **{AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, "invalid_token")}
+            url,
+            **{AUTH_HEADER: "{} {}".format(AUTH_KEYWORD, "invalid_token")},
         )
         self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, response.content)
         self.assertEqual(str(response.data["detail"]), "Invalid authentication token")
@@ -110,7 +112,8 @@ class TestApi(TestCase):
         :return:
         """
         user = User.objects.create(
-            username=self.anonymous_login.token, password="password"
+            username=self.anonymous_login.token,
+            password="password",
         )
         self.assertTrue(user.is_anonymous_login)
 
@@ -128,7 +131,8 @@ class TestApi(TestCase):
         :return:
         """
         user = User.objects.create(
-            username=self.anonymous_login.token, password="password"
+            username=self.anonymous_login.token,
+            password="password",
         )
         self.assertEqual(user.anonymous_login, self.anonymous_login)
 

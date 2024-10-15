@@ -13,7 +13,9 @@ class AnonymousLogin(models.Model):
     created = models.DateTimeField(_("created"), auto_now_add=True)
     request_data = models.JSONField(default=dict)
     expiration_datetime = models.DateTimeField(
-        _("expiration datetime"), null=True, default=None
+        _("expiration datetime"),
+        null=True,
+        default=None,
     )
 
     def save(self, *args, **kwargs):
@@ -35,7 +37,7 @@ class AnonymousLogin(models.Model):
             return timezone.now() + timedelta(minutes=default_expiration)
 
 
-class AnonymousLoginUserMixin(object):
+class AnonymousLoginUserMixin:
     @property
     def is_anonymous_login(self):
         return AnonymousLogin.objects.filter(token=self.username).exists()
