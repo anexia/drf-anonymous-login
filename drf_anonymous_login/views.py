@@ -43,7 +43,9 @@ class CreateAnonymousLoginViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
                 "headers": self.extract_request_headers(request),
             }
         )
-        return Response({"token": user.token}, status=status.HTTP_201_CREATED)
+        response = Response({"token": user.token}, status=status.HTTP_201_CREATED)
+        response.set_cookie("anonymous_token", f"Token {user.token}")
+        return response
 
 
 class AnonymousLoginAuthenticationModelViewSet(viewsets.ModelViewSet):
