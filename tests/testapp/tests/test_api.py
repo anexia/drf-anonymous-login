@@ -3,12 +3,13 @@ from datetime import timedelta
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
-from testapp.models import PrivateModel, PublicModel, User
 
 from drf_anonymous_login.authentication import AUTH_HEADER, AUTH_KEYWORD
 from drf_anonymous_login.management.commands.cleanup_tokens import Command
 from drf_anonymous_login.models import AnonymousLogin
+from testapp.models import PrivateModel, PublicModel, User
 
 
 class TestApi(TestCase):

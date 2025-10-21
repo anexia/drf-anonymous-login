@@ -1,9 +1,9 @@
 from django.apps import apps
 from django.conf import settings
 from django.test import SimpleTestCase
-from testapp.models import PrivateModel, PublicModel
 
 from drf_anonymous_login.models import AnonymousLogin
+from testapp.models import PrivateModel, PublicModel
 
 
 class TestSetup(SimpleTestCase):

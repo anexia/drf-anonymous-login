@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import include, path
+
 from rest_framework import routers
+
 from testapp.views import PrivateModelViewSet, PublicModelViewSet
 
 from drf_anonymous_login.views import CreateAnonymousLoginViewSet

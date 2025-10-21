@@ -66,6 +66,17 @@ ANONYMOUS_LOGIN_EXPIRATION=15
 
 ```
 
+## Auto-formatter setup
+We use ruff (https://github.com/astral-sh/ruff) for local auto-formatting and for linting in the CI pipeline.
+The pre-commit framework (https://pre-commit.com) provides GIT hooks for these tools, so they are automatically applied
+before every commit.
+
+Steps to activate:
+* Install the pre-commit framework: `pip install pre-commit` (for alternative installation options see https://pre-commit.com/#install)
+* Activate the framework (from the root directory of the repository): `pre-commit install`
+
+Hint: You can also run the formatters manually at any time with the following command: `pre-commit run --all-files`
+
 ## Unit Tests
 
 See folder [tests/](tests/). The provided tests cover these criteria:
