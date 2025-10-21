@@ -154,7 +154,8 @@ class TestApi(TestCase):
         response = self.client.post(url)
         self.assertEqual(HTTP_201_CREATED, response.status_code)
         self.assertEqual(
-            response.cookies["anonymous_token"].value, f"Token {response.data['token']}"
+            response.cookies["anonymous_token"].value,
+            f"Token {response.data['token']}",
         )
 
         # set cookies and make sure it works

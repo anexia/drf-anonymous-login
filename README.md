@@ -85,10 +85,7 @@ You may exchange the installed Django and DRF versions according to your require
 ```bash
 # install dependencies
 python -m pip install --upgrade pip
-pip install -r requirements.txt
-
-# setup environment
-pip install -e .
+pip install -e ".[dev]"
 
 # run tests
 cd tests && python manage.py test
