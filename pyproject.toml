@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=75.1.0", "wheel>=0.44.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drf-anonymous-login"
+version = "0.1.0"
+description = "Django rest framework module to allow login via token (without User instance)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "django>=4.2,<5.2",
+    "djangorestframework>=3.15,<3.16",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.6.2,<7.7",
+    "twine>=5.1.1,<5.2",
+    "pre-commit>=4.0.1,<4.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/anexia/drf-anonymous-login"
+Repository = "https://github.com/anexia/drf-anonymous-login"
