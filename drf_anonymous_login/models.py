@@ -47,8 +47,4 @@ class AnonymousLoginUserMixin:
         """
         Returns the "longest" (with the latest expiration) AnonymousLogin element matching the user's username
         """
-        return (
-            AnonymousLogin.objects.filter(token=self.username)
-            .order_by("-expiration_datetime")
-            .first()
-        )
+        return AnonymousLogin.objects.filter(token=self.username).order_by("-expiration_datetime").first()
