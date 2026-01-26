@@ -15,16 +15,14 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies and package
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install build twine
 
     - name: Build source and binary distribution package
       run: |
-        python setup.py sdist bdist_wheel
-      env:
-        PACKAGE_VERSION: ${{ github.ref }}
+        python -m build
 
     - name: Check distribution package
       run: |

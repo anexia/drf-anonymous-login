@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=75.1.0", "wheel>=0.44.0"]
+requires = ["setuptools>=75.1.0", "wheel>=0.44.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "drf-anonymous-login"
-version = "1.2.0"
+dynamic = ["version"]
 description = "Django rest framework module to allow login via token (without User instance)."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -30,6 +30,7 @@ dev = [
     "coverage>=7.6.2,<7.7",
     "twine>=5.1.1,<5.2",
     "pre-commit>=4.0.1,<4.1",
+    "setuptools-scm>=8.0",
 ]
 
 [project.urls]
@@ -68,3 +69,5 @@ section-order = [
 
 [tool.ruff.lint.per-file-ignores]
 "apps.py" = ["F401"]
+
+[tool.setuptools_scm]
